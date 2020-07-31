@@ -1,0 +1,31 @@
+{
+  "name": "mam/meeting-room",
+  "description": "MAM Meeting Room",
+  "minimum-stability": "stable",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "wordpress",
+    "plugin"
+  ],
+  "type": "wordpress-plugin",
+  "homepage": "https://github.com/AliSal92/mam-meeting-room/",
+  "authors": [
+    {
+      "name": "Ali",
+      "email": "ali.alsalti1992@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/AliSal92/mam-meeting-room/issues"
+  },
+  "require": {
+    "php": ">=5.6",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mam\\SalesBoard\\": "inc/"
+    }
+  }
+}
