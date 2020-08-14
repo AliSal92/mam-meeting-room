@@ -1,0 +1,44 @@
+.meeting-room-table .row {
+    margin: 0;
+}
+
+.meeting-room-table h2 {
+    margin: 0 !important;
+}
+
+.meeting-room-table .orange-col {
+    background-color: #f2582c;
+    color: #ffffff;
+}
+
+.meeting-room-table .small-room {
+    border-left: 5px solid #000;
+}
+
+.meeting-room-table .stripe:nth-child(even) {
+    background-color: orangered;
+}
+
+.meeting-room-table .stripe-2:nth-child(odd) {
+    background-color: orangered;
+}
+
+.meeting-room-table .orange-col {
+    padding: 5px 15px;
+}
+
+.meeting-room-table {
+    width: 100%;
+}
+
+.meeting-room-table h2 {
+    font-size: 28px;
+}
+
+.meeting-room-table h3 {
+    font-size: 24px;
+}
+
+.meeting-room-table h4 {
+    font-size: 24px;
+}

@@ -5,7 +5,7 @@
 
 namespace Mam\MeetingRoom;
 
-final class Init
+final class InitMeetingRoom
 {
 	/**
 	 * Store all the classes inside an array
@@ -15,7 +15,7 @@ final class Init
 	{
 		return [
 			Base\Enqueue::class,
-			Admin\OptionPage::class,
+			Admin\MeetingRoom::class,
 			Endpoint\MeetingRoom::class,
 		];
 	}
