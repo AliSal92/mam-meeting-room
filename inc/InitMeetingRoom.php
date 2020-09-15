@@ -16,7 +16,8 @@ final class InitMeetingRoom
 		return [
 			Base\Enqueue::class,
 			Admin\MeetingRoom::class,
-			Endpoint\MeetingRoom::class,
+            Endpoint\SalesGame::class,
+            Endpoint\MeetingRoom::class,
 		];
 	}
 

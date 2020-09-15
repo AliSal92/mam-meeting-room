@@ -3,11 +3,23 @@ jQuery(document).ready(function ($) {
     $.ajaxSetup({
         cache: false
     });
-    if($(".meeting-room-table").length){
-        var loadUrl = "https://mamdevsite.com/mam/meeting-room-data/";
+    let loadedURL = "https://mamdevsite.com/mam/sales-game-data/";
+    function get_load_url(){
+        let loadUrl = "https://mamdevsite.com/mam/sales-game-data/";
+        if(loadedURL == "https://mamdevsite.com/mam/sales-game-data/"){
+            loadUrl = "https://mamdevsite.com/mam/meeting-room-data/";
+            loadedURL = "https://mamdevsite.com/mam/meeting-room-data/";
+        }else{
+            loadedURL = "https://mamdevsite.com/mam/sales-game-data/";
+        }
+        return loadUrl;
+    }
+
+    let $table = $(".meeting-room-table");
+    if($table.length){
         setInterval(function(){
-            $(".meeting-room-table").load(loadUrl);
-        }, 5000);
-        $(".meeting-room-table").load(loadUrl);
+            $table.load(get_load_url());
+        }, 15000);
+        $table.load(get_load_url());
     }
 });
