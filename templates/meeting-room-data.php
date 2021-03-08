@@ -17,9 +17,9 @@ if (have_rows($acf_repater, 'option')) {
         $meeting['end_time'] = get_sub_field('end_time');
         $meeting['room'] = get_sub_field('room');
 
-        if(strtotime( $meeting['date'] . ' ' . $meeting['start_time'] ) < time()){
+        if (strtotime($meeting['date'] . ' ' . $meeting['start_time']) < time()) {
             delete_row($acf_repater, get_row_index(), 'option');
-        }else{
+        } else {
             $meetings[] = $meeting;
         }
         $index = $index + 1;
@@ -102,5 +102,22 @@ if (have_rows($acf_repater, 'option')) {
 
     .meeting-room-table .stripe-2:nth-child(odd) {
         background-color: rgba(242, 88, 44, 0.25);
+    }
+
+    .meeting-room-table h4, .meeting-room-table h5 {
+        margin: 15px 0;
+        font-size: 23px;
+    }
+
+    .meeting-room-table h5 {
+        white-space: nowrap;
+    }
+
+    .meeting-room-table h3 {
+        font-size: 24px;
+    }
+
+    .meeting-room-table h2 {
+        font-size: 24px;
     }
 </style>

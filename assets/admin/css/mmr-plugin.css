@@ -1,0 +1,29 @@
+input#publish {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #c00;
+    border: 1px solid #c00;
+}
+
+.refresh-text, .refresh-text p {
+    font-size: 16px;
+    color: #c00;
+}
+
+div#post-body {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 0 !important;
+
+}
+
+.postbox-container {
+    width: 100% !important;
+    float: none !important;
+    flex-direction: row;
+}
+
+#poststuff #post-body.columns-2 #side-sortables {
+    width: 100%;
+}

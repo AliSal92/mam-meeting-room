@@ -5,3 +5,9 @@ use Mam\MeetingRoom\Endpoint\SalesGame;
 $salesGame = new SalesGame();
 
 echo $salesGame->get_data();
+?>
+<style>
+    .sales-game td:first-child{
+        display: none;
+    }
+</style>

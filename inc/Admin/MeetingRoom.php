@@ -8,55 +8,125 @@ namespace Mam\MeetingRoom\Admin;
 
 use Mam\MeetingRoom\Base\ServiceInterface;
 
-class MeetingRoom implements ServiceInterface{
+class MeetingRoom implements ServiceInterface
+{
 
-	public function register() {
-		add_action( 'plugins_loaded', [$this, 'add_option_page']);
-		add_action( 'plugins_loaded', [$this, 'add_custom_fields']);
+    public function register()
+    {
+        add_action('plugins_loaded', [$this, 'add_option_page']);
+        add_action('plugins_loaded', [$this, 'add_custom_fields']);
         add_filter('acf/validate_value/name=schedule', [$this, 'validate_meeting'], 10, 4);
 
     }
 
-    public function validate_meeting($valid, $value, $field, $input_name){
-	    $check = true;
-	    foreach ($value as $schedule){
-	        if(!$this->validate_schedule($schedule, $value)){
+    public function validate_meeting($valid, $value, $field, $input_name)
+    {
+        $check = true;
+        foreach ($value as $schedule) {
+            if (!$this->validate_schedule($schedule, $value)) {
                 $check = false;
             }
         }
-	    if($check){
+        if ($check) {
+            $this->insert_log($value);
             return $valid;
-        }else{
-	        return __('The time you chose is booked, please choose a different time');
+        } else {
+            return __('The time you chose is booked, please choose a different time');
         }
 
     }
 
-    private function validate_schedule($schedule, $values){
+    private function insert_log($value)
+    {
+        $meetings = [];
+
+        $acf_repater = 'schedule';
+        if (have_rows($acf_repater, 'option')) {
+            $index = 0;
+            while (have_rows($acf_repater, 'option')) {
+                the_row();
+
+                $meeting['date'] = get_sub_field('date');
+                $meeting['name'] = get_sub_field('name');
+                $meeting['start_time'] = get_sub_field('start_time');
+                $meeting['end_time'] = get_sub_field('end_time');
+                $meeting['room'] = get_sub_field('room');
+
+                if (strtotime($meeting['date'] . ' ' . $meeting['start_time']) < time()) {
+                    delete_row($acf_repater, get_row_index(), 'option');
+                } else {
+                    $meetings[] = $meeting;
+                }
+                $index = $index + 1;
+            }
+        }
+        $id = wp_insert_post(array(
+            'post_type' => 'board-log'
+        ));
+        update_field('content_before',  $this->build_table($meetings), $id);
+        update_field('content_after',  $this->build_table($value) , $id);
+        wp_set_object_terms( $id, 'Meetings', 'log-type' );
+        wp_set_object_terms( $id, 'Update', 'log-action' );
+
+    }
+
+    private function build_table($array)
+    {
+        // start table
+        $html = '<table>';
+        // header row
+        $html .= '<tr>';
+        foreach ($array[0] as $key => $value) {
+            $html .= '<th>' . htmlspecialchars($key) . '</th>';
+        }
+
+        $html .= '</tr>';
+
+// data rows
+        foreach ($array as $key => $value) {
+            $html .= '<tr>';
+            foreach ($value as $key2 => $value2) {
+                $html .= '<td>' . htmlspecialchars($value2) . '</td>';
+            }
+            $html .= '</tr>';
+        }
+
+// finish table and return it
+
+        $html .= '</table>';
+        return $html;
+    }
+
+    private
+    function validate_schedule($schedule, $values)
+    {
         $start = strtotime($schedule['field_5f23a6ff14207'] . ' ' . $schedule['field_5f23a74514209']);
         $end = strtotime($schedule['field_5f23a6ff14207'] . ' ' . $schedule['field_5f23a8261420a']);
-	    foreach ($values as $value){
-            if($value == $schedule){
+        foreach ($values as $value) {
+            if ($value == $schedule) {
                 continue;
             }
-            if($value['field_5f23a89f1420b'] != $schedule['field_5f23a89f1420b']){
+            if ($value['field_5f23a89f1420b'] != $schedule['field_5f23a89f1420b']) {
                 continue;
             }
-	        $_start = strtotime($value['field_5f23a6ff14207'] . ' ' . $value['field_5f23a74514209']);
+            $_start = strtotime($value['field_5f23a6ff14207'] . ' ' . $value['field_5f23a74514209']);
             $_end = strtotime($value['field_5f23a6ff14207'] . ' ' . $value['field_5f23a8261420a']);
-            if($start >= $_start && $start < $_end){
+            var_dump($_start);
+            if ($start >= $_start && $start < $_end) {
                 return false;
             }
-            if($end > $_start && $end <= $_end){
+            if ($end > $_start && $end <= $_end) {
                 return false;
             }
         }
-	    return true;
+        return true;
     }
 
-	public static function add_custom_fields() {
+    public
+    static function add_custom_fields()
+    {
         // Register the option page using ACF
-        if ( function_exists( 'acf_add_options_page' ) ) {
+        if (function_exists('acf_add_options_page')) {
             acf_add_local_field_group(array(
                 'key' => 'group_5f23a6b1a9301',
                 'title' => 'Meeting Room',
@@ -250,30 +320,32 @@ class MeetingRoom implements ServiceInterface{
                 'description' => '',
             ));
         }
-	}
+    }
 
-	public static function add_option_page() {
-		// Register the option page using ACF
-		if ( function_exists( 'acf_add_options_page' ) ) {
-		    // parent page
+    public
+    static function add_option_page()
+    {
+        // Register the option page using ACF
+        if (function_exists('acf_add_options_page')) {
+            // parent page
             acf_add_options_page(array(
-                'page_title' 	=> 'MAM',
-                'menu_title'	=> 'MAM',
-                'menu_slug' 	=> 'mam',
-                'capability'	=> 'read',
-                'redirect'		=> true
+                'page_title' => 'MAM',
+                'menu_title' => 'MAM',
+                'menu_slug' => 'mam',
+                'capability' => 'read',
+                'redirect' => true
             ));
 
             // child page
             acf_add_options_sub_page(array(
-                'page_title' 	=> 'Meeting Room',
-                'menu_title'	=> 'Meeting Room',
-                'menu_slug'  => 'mam-meeting-room',
-                'capability'	=> 'read',
-                'parent_slug'	=> 'mam'
+                'page_title' => 'Meeting Room',
+                'menu_title' => 'Meeting Room',
+                'menu_slug' => 'mam-meeting-room',
+                'capability' => 'read',
+                'parent_slug' => 'mam'
             ));
 
-		}
-	}
+        }
+    }
 
 }

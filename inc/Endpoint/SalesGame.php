@@ -62,9 +62,6 @@ class SalesGame implements ServiceInterface
         $count = 0;
         foreach ($cells as $cell) {
             $count = $count + 1;
-            if($count == 11){
-                break;
-            }
             $table .= "<td>$cell</td>";
         }
         $table .= "</tr>";
@@ -76,9 +73,6 @@ class SalesGame implements ServiceInterface
             $count = 0;
             foreach ($cells as $cell) {
                 $count = $count + 1;
-                if($count == 11){
-                    break;
-                }
                 $table .= "<td>$cell</td>";
             }
             $table .= "</tr>";
@@ -90,9 +84,6 @@ class SalesGame implements ServiceInterface
         $count = 0;
         foreach ($cells as $cell) {
             $count = $count + 1;
-            if($count == 11){
-                break;
-            }
             $table .= "<td>$cell</td>";
         }
         $table .= "</tr>";

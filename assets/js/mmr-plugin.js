@@ -3,15 +3,16 @@ jQuery(document).ready(function ($) {
     $.ajaxSetup({
         cache: false
     });
-    let loadedURL = "https://mamdevsite.com/mam/sales-game-data/";
+    let loadedURL = "https://mamdevsite.com/mam/meeting-room-data/";
     function get_load_url(){
-        let loadUrl = "https://mamdevsite.com/mam/sales-game-data/";
+        let loadUrl = "https://mamdevsite.com/mam/meeting-room-data/";
+        /*
         if(loadedURL == "https://mamdevsite.com/mam/sales-game-data/"){
             loadUrl = "https://mamdevsite.com/mam/meeting-room-data/";
             loadedURL = "https://mamdevsite.com/mam/meeting-room-data/";
         }else{
             loadedURL = "https://mamdevsite.com/mam/sales-game-data/";
-        }
+        }*/
         return loadUrl;
     }
 
@@ -19,7 +20,7 @@ jQuery(document).ready(function ($) {
     if($table.length){
         setInterval(function(){
             $table.load(get_load_url());
-        }, 15000);
+        }, 5000);
         $table.load(get_load_url());
     }
 });
